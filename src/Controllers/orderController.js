@@ -122,8 +122,8 @@ const updateOrder = async function (req, res) {
         if (!existUser) return res.status(404).send({ status: false, message: "userId doesn't exist" })
 
         // //  Authorization
-        if (existUser._id.toString() != req.userId)
-            return res.status(403).send({ status: false, message: `Unauthorized access! User's info doesn't match` })
+        // if (existUser._id.toString() != req.userId)
+        //     return res.status(403).send({ status: false, message: `Unauthorized access! User's info doesn't match` })
 
         const { orderId, status } = data
 

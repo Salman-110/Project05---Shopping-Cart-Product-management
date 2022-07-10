@@ -101,32 +101,10 @@ const productByFilter = async function (req, res) {
         if (name) {
             filter.title = name
         }
-        console.log(filter)
+
         if (size) {
-
             let asize = size.split(",")
-            console.log(asize)
-
-            // if (asize.length > 1) {
-            //     let arr = []
-
-            //     for (let i = 0; i < asize.length; i++) {
-            //         if (["S", "XS", "M", "X", "L", "XXL", "XL"].indexOf(asize[i]) == -1) {
-            //             return res
-            //                 .status(400)
-            //                 .send({ status: false, message: "size should be valid" });
-            //         }
-            //         if (["S", "XS", "M", "X", "L", "XXL", "XL"].includes(asize[i])) {
-            //             // obj.availableSizes=asize[i]
-            //             arr.push(asize[i])
-            //         }
-            //     }
-            //     let newArr = arr.map((x) => { return { availableSizes: x } })
-            //     console.log(newArr)
-            //     filter.availableSizes = { $all: newArr }
-            //     // console.log(newArr)
-            // }
-            filter.availableSizes = asize[0]
+              filter.availableSizes = asize[0]
         }
         if (priceGreaterThan) {
             if (!(!isNaN(Number(priceGreaterThan)))) {
@@ -159,7 +137,7 @@ const productByFilter = async function (req, res) {
             }
             return res.status(200).send({ status: true, message: 'Success', data: products })
         }
-        console.log(filter)
+
         const products = await productModel.find(filter)
         if (products.length === 0) {
             return res.status(404).send({ Status: false, message: 'No Product found' })
@@ -168,8 +146,7 @@ const productByFilter = async function (req, res) {
 
 
     } catch (err) {
-        console.log(err)
-        res.status(500).send({ status: false, message: err.message })
+             res.status(500).send({ status: false, message: err.message })
     }
 }
 
@@ -184,10 +161,10 @@ const productById = async function (req, res) {
             return res.status(400).send({ status: false, message: "product Id is required" })
         }
         if (!isValidObjectId(productId)) {
-            return res.status(400).send({ status: false, message: "please enter valid productId" })
+            return res.status(400).send({ status: false, message                                                                                                                                                                                                                : "please enter valid productId" })
         }
         //DB call
-        const allProduct = await productModel.findOne({ _id: productId, isdeleted: false })
+        const allProduct = await productModel.findOne({ _id: productId, isDeleted: false })
         if (!allProduct) {
             return res.status(404).send({ status: false, message: "Product not found" })
         }
@@ -197,7 +174,6 @@ const productById = async function (req, res) {
         console.log(err)
         return res.status(500).send({ status: false, message: err.message })
     }
-
 }
 
 
@@ -205,7 +181,7 @@ const updateProduct = async function (req, res) {
     try {
         let productId = req.params.productId
         let Data = JSON.parse(JSON.stringify(req.body))
-        console.log(Data)
+  
         let files = req.files
 
         if (!isValidObjectId(productId))
@@ -316,7 +292,7 @@ const deleteProduct = async (req, res) => {
         if (product.isDeleted == true)
             return res.status(400).send({ status: true, message: `Product is either deleted or doesn't exist` })
 
-        const deletedoc = await productModel.findOneAndUpdate({ _id: productId }, { isDeleted: true, deletedAt: new Date() }, {new:true})
+        const deletedoc = await productModel.findOneAndUpdate({ _id: productId }, { isDeleted: true, deletedAt: new Date() }, { new: true })
 
         return res.status(200).send({ status: true, message: `Product deleted successfully.`, data: deletedoc })
     }
